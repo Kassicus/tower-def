@@ -16,11 +16,11 @@ class Game():
 
         self.debug_interface = debug.DebugInterface()
 
+        lib.create_random_waypoints(5)
+        print(lib.WAYPOINTS)
+
         self.enemies = pygame.sprite.Group()
-        self.test = enemy.RedEnemy(1000, 600)
-
-        self.enemies.add(self.test)
-
+        
     def run(self) -> None:
         while self.running:
             self.event_loop()
@@ -40,6 +40,10 @@ class Game():
 
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
+
+                if event.key == pygame.K_e:
+                    e = enemy.RedEnemy(100, 100)
+                    self.enemies.add(e)
 
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)

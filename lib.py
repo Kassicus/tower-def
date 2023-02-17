@@ -4,10 +4,12 @@ import random
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
-WAYPOINTS = [
-    pygame.math.Vector2(100, 200),
-    pygame.math.Vector2(400, 800),
-    pygame.math.Vector2(900, 300)]
+WAYPOINTS = []
+
+def create_random_waypoints(count: int):
+    for x in range(count):
+        w = pygame.math.Vector2(random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT))
+        WAYPOINTS.append(w)
 
 class Color():
     def __init__(self) -> None:
