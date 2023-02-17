@@ -2,6 +2,7 @@ import pygame
 
 import lib
 import debug
+import enemy
 
 pygame.init()
 
@@ -14,6 +15,11 @@ class Game():
         self.clock = pygame.time.Clock()
 
         self.debug_interface = debug.DebugInterface()
+
+        self.enemies = pygame.sprite.Group()
+        self.test = enemy.RedEnemy(1000, 600)
+
+        self.enemies.add(self.test)
 
     def run(self) -> None:
         while self.running:
@@ -32,14 +38,19 @@ class Game():
                 if event.key == pygame.K_TAB:
                     self.debug_interface.toggle_active()
 
+                if event.key == pygame.K_ESCAPE:
+                    self.running = False
+
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
+
+        self.enemies.draw(self.screen)
 
         if self.debug_interface.active:
             self.debug_interface.draw()
 
-
     def update(self) -> None:
+        self.enemies.update()
 
         self.debug_interface.update(self.clock)
         pygame.display.update()

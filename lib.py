@@ -4,6 +4,11 @@ import random
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
+WAYPOINTS = [
+    pygame.math.Vector2(100, 200),
+    pygame.math.Vector2(400, 800),
+    pygame.math.Vector2(900, 300)]
+
 class Color():
     def __init__(self) -> None:
         self.BLACK = pygame.Color(0, 0, 0, 255)
