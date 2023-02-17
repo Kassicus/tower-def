@@ -52,6 +52,9 @@ class Game():
 
         if self.debug_interface.active:
             self.debug_interface.draw()
+            
+            for enemy in self.enemies:
+                enemy.debug()
 
     def update(self) -> None:
         self.enemies.update()

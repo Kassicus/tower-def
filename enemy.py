@@ -16,7 +16,7 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.waypoints = lib.WAYPOINTS.copy()
 
         self.image = pygame.Surface([size, size])
-        self.image.fill(lib.color.RED)
+        self.image.fill(lib.color.WHITE)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -36,16 +36,17 @@ class BaseEnemy(pygame.sprite.Sprite):
 
         return vectors
 
+    def debug(self) -> None:
+        if len(self.waypoints) >= 1:
+            pygame.draw.line(pygame.display.get_surface(), lib.color.BLUE, self.pos, self.waypoints[0], 1)
+            pygame.draw.line(pygame.display.get_surface(), lib.color.RED, self.pos, (self.pos.x, self.pos.y + self.vel.y))
+            pygame.draw.line(pygame.display.get_surface(), lib.color.GREEN, self.pos, (self.pos.x + self.vel.x, self.pos.y))
+
     def update(self) -> None:
         self.pos += self.vel * lib.delta_time
         self.rect.center = pygame.math.Vector2(round(self.pos.x), round(self.pos.y))
 
         if len(self.waypoints) >= 1:
-            #TODO Move this to the debug file for each enemy
-            pygame.draw.line(pygame.display.get_surface(), lib.color.BLUE, self.pos, self.waypoints[0], 1)
-            pygame.draw.line(pygame.display.get_surface(), lib.color.RED, self.pos, (self.pos.x, self.pos.y + self.vel.y))
-            pygame.draw.line(pygame.display.get_surface(), lib.color.GREEN, self.pos, (self.pos.x + self.vel.x, self.pos.y))
-
             self.move_to_waypoint(self.waypoints[0])
         else:
             self.vel.x, self.vel.y = 0, 0
@@ -56,4 +57,5 @@ class BaseEnemy(pygame.sprite.Sprite):
 class RedEnemy(BaseEnemy):
     def __init__(self, x: int, y: int) -> None:
         super().__init__(x, y, 20, 10, 200)
+        self.image.fill(lib.color.YELLOW)
         
