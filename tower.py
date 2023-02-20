@@ -7,7 +7,7 @@ import groups
 import projectile
 
 class BaseTurret(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, size: int, damage: int, projectile_speed: float) -> None:
+    def __init__(self, x: int, y: int, size: int, damage: int, projectile_speed: float, color: pygame.Color) -> None:
         super().__init__()
 
         self.pos = pygame.math.Vector2(x, y)
@@ -18,9 +18,12 @@ class BaseTurret(pygame.sprite.Sprite):
         self.shot_cooldown = 100
 
         self.target_type = "first"
+        self.projectile_type = "static"
+
+        self.color = color
         
         self.image = pygame.Surface([size, size])
-        self.image.fill(lib.color.WHITE)
+        self.image.fill(self.color)
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -45,10 +48,15 @@ class BaseTurret(pygame.sprite.Sprite):
                 case _:
                     target = groups.enemies.sprites()[0]
 
-            target_raw_vectors = self.get_vectors(target.pos)
-            target_vectors = pygame.math.Vector2(target_raw_vectors[0], target_raw_vectors[1])
-            proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 4, 1)
-            groups.projectiles.add(proj)
+            match self.projectile_type:
+                case "static":
+                    target_raw_vectors = self.get_vectors(target.pos)
+                    target_vectors = pygame.math.Vector2(target_raw_vectors[0], target_raw_vectors[1])
+                    proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 4, 1, self.color)
+                    groups.projectiles.add(proj)
+                case "dynamic":
+                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, target, 4, 3, self.color)
+                    groups.projectiles.add(proj)
     
     def update(self) -> None:
         self.shot_cooldown -= 1
@@ -59,4 +67,11 @@ class BaseTurret(pygame.sprite.Sprite):
 
 class RedTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 40, 1, 1500)
+        super().__init__(x, y, 40, 1, 1500, lib.color.RED)
+
+class BlueTurret(BaseTurret):
+    def __init__(self, x: int, y: int) -> None:
+        super().__init__(x, y, 30, 3, 200, lib.color.BLUE)
+        self.shot_max_cooldown = 30
+        self.shot_cooldown = 30
+        self.projectile_type = "dynamic"

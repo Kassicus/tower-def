@@ -44,7 +44,12 @@ class Game():
                     e = enemy.RedEnemy(100, 100)
                     groups.enemies.add(e)
 
-                if event.key == pygame.K_t:
+                if event.key == pygame.K_b:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    t = tower.BlueTurret(mouse_x, mouse_y)
+                    groups.towers.add(t)
+                
+                if event.key == pygame.K_r:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     t = tower.RedTurret(mouse_x, mouse_y)
                     groups.towers.add(t)
