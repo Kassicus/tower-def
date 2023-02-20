@@ -56,6 +56,6 @@ class BaseEnemy(pygame.sprite.Sprite):
 
 class RedEnemy(BaseEnemy):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 20, 10, 200)
+        super().__init__(x, y, 20, 10, 50)
         self.image.fill(lib.color.YELLOW)
         

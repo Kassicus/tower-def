@@ -3,6 +3,8 @@ import pygame
 import lib
 import debug
 import enemy
+import groups
+import tower
 
 pygame.init()
 
@@ -17,9 +19,10 @@ class Game():
         self.debug_interface = debug.DebugInterface()
 
         lib.create_random_waypoints(5)
-        print(lib.WAYPOINTS)
 
-        self.enemies = pygame.sprite.Group()
+        self.test = tower.RedTurret(500, 500)
+        self.test2 = tower.RedTurret(1000, 800)
+        groups.towers.add(self.test, self.test2)
         
     def run(self) -> None:
         while self.running:
@@ -43,21 +46,26 @@ class Game():
 
                 if event.key == pygame.K_e:
                     e = enemy.RedEnemy(100, 100)
-                    self.enemies.add(e)
+                    groups.enemies.add(e)
 
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
 
-        self.enemies.draw(self.screen)
+        groups.enemies.draw(self.screen)
+        groups.towers.draw(self.screen)
+        groups.projectiles.draw(self.screen)
 
         if self.debug_interface.active:
             self.debug_interface.draw()
             
-            for enemy in self.enemies:
+            for enemy in groups.enemies:
                 enemy.debug()
 
     def update(self) -> None:
-        self.enemies.update()
+        groups.enemies.update()
+        groups.towers.update()
+        groups.projectiles.update()
+        groups.check_projectile_collision()
 
         self.debug_interface.update(self.clock)
         pygame.display.update()
