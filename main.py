@@ -64,6 +64,7 @@ class Game():
         groups.enemies.update()
         groups.towers.update()
         groups.projectiles.update()
+        groups.check_projectile_collision()
 
         self.debug_interface.update(self.clock)
         pygame.display.update()

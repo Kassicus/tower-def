@@ -18,6 +18,9 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
+    def destroy(self) -> None:
+        self.kill()
+
     def update(self) -> None:
         self.pos += self.vel * lib.delta_time
         self.rect.center = self.pos
