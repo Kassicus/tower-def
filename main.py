@@ -19,10 +19,6 @@ class Game():
         self.debug_interface = debug.DebugInterface()
 
         lib.create_random_waypoints(5)
-
-        self.test = tower.RedTurret(500, 500)
-        self.test2 = tower.RedTurret(1000, 800)
-        groups.towers.add(self.test, self.test2)
         
     def run(self) -> None:
         while self.running:
@@ -48,6 +44,11 @@ class Game():
                     e = enemy.RedEnemy(100, 100)
                     groups.enemies.add(e)
 
+                if event.key == pygame.K_t:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    t = tower.RedTurret(mouse_x, mouse_y)
+                    groups.towers.add(t)
+
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
 
@@ -65,6 +66,7 @@ class Game():
         groups.enemies.update()
         groups.towers.update()
         groups.projectiles.update()
+        
         groups.check_projectile_collision()
 
         self.debug_interface.update(self.clock)

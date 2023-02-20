@@ -16,6 +16,8 @@ class BaseTurret(pygame.sprite.Sprite):
         self.projectile_speed = projectile_speed
         self.shot_max_cooldown = 100
         self.shot_cooldown = 100
+
+        self.target_type = "first"
         
         self.image = pygame.Surface([size, size])
         self.image.fill(lib.color.WHITE)
@@ -32,7 +34,17 @@ class BaseTurret(pygame.sprite.Sprite):
     
     def shoot(self) -> None:
         if len(groups.enemies) > 0:
-            target = random.choice(groups.enemies.sprites())
+            match self.target_type:
+                case "first":
+                    target = groups.enemies.sprites()[0]
+                case "last":
+                    last = len(groups.enemies)
+                    target = groups.enemies.sprites()[last - 1]
+                case "random":
+                    target = random.choice(groups.enemies.sprites())
+                case _:
+                    target = groups.enemies.sprites()[0]
+
             target_raw_vectors = self.get_vectors(target.pos)
             target_vectors = pygame.math.Vector2(target_raw_vectors[0], target_raw_vectors[1])
             proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 4, 1)

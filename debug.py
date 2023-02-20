@@ -24,7 +24,7 @@ class DebugInterface():
             self.active = True
     
     def draw(self) -> None:
-        self.display_surface.blit(self.fps_text, (1820, 10))
+        self.display_surface.blit(self.fps_text, (lib.SCREEN_WIDTH - 100, 10))
 
     def update(self, clock: pygame.time.Clock) -> None:
         self.fps_text = self.get_fps(clock)
