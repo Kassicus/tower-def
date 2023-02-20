@@ -21,7 +21,8 @@ class Game():
         lib.create_random_waypoints(5)
 
         self.test = tower.RedTurret(500, 500)
-        groups.towers.add(self.test)
+        self.test2 = tower.RedTurret(1000, 800)
+        groups.towers.add(self.test, self.test2)
         
     def run(self) -> None:
         while self.running:
