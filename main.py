@@ -6,6 +6,7 @@ import enemy
 import groups
 import tower
 import level
+import waves
 
 pygame.init()
 
@@ -50,13 +51,17 @@ class Game():
 
                 if event.key == pygame.K_b:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    t = tower.BlueTurret(mouse_x, mouse_y)
+                    t = tower.DoubleTurret(mouse_x, mouse_y)
                     groups.towers.add(t)
                 
                 if event.key == pygame.K_r:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
-                    t = tower.RedTurret(mouse_x, mouse_y)
+                    t = tower.SingleTurret(mouse_x, mouse_y)
                     groups.towers.add(t)
+
+                if event.key == pygame.K_w:
+                    w = waves.Wave("basic", 50, 50)
+                    waves.wave_group.add(w)
 
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
@@ -64,7 +69,6 @@ class Game():
         self.level.draw(self.screen)
 
         groups.enemies.draw(self.screen)
-        #groups.towers.draw(self.screen)
         groups.projectiles.draw(self.screen)
 
         for tower in groups.towers:
@@ -82,6 +86,8 @@ class Game():
         groups.projectiles.update()
         
         groups.check_projectile_collision()
+
+        waves.wave_group.update()
 
         self.level.update()
 

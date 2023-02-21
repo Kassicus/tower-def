@@ -60,10 +60,10 @@ class BaseTurret(pygame.sprite.Sprite):
                 case "static":
                     target_raw_vectors = self.get_vectors(self.target.pos)
                     target_vectors = pygame.math.Vector2(target_raw_vectors[0], target_raw_vectors[1])
-                    proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 1)
+                    proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, self.damage)
                     groups.projectiles.add(proj)
                 case "dynamic":
-                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, 3)
+                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, self.damage)
                     groups.projectiles.add(proj)
 
     def rotate_sprite(self, surface: pygame.Surface) -> None:
@@ -82,13 +82,13 @@ class BaseTurret(pygame.sprite.Sprite):
             self.shoot()
             self.shot_cooldown = self.shot_max_cooldown
 
-class RedTurret(BaseTurret):
+class SingleTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
         super().__init__(x, y, 1, 1500)
 
-class BlueTurret(BaseTurret):
+class DoubleTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 3, 600)
+        super().__init__(x, y, 1, 600)
         self.image = lib.TOWER_SPRITES["advanced"].convert_alpha()
         self.shot_max_cooldown = 30
         self.shot_cooldown = 30
