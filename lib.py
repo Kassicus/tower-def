@@ -13,6 +13,11 @@ LEVEL_BACKGROUNDS = {
     "grass_1": pygame.image.load("assets/tiled/grass_1.png")
 }
 
+BULLET_SPRITES = {
+    "bullet": pygame.image.load("assets/sprites/bullet.png"),
+    "tracking": pygame.image.load("assets/sprites/tracking_bullet.png")
+}
+
 ENEMY_SPRITES = {
     "base_right": pygame.image.load("assets/sprites/base_enemy_right.png"),
     "base_down": pygame.image.load("assets/sprites/base_enemy_down.png"),

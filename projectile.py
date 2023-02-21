@@ -4,7 +4,7 @@ import math
 import lib
 
 class Projectile(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, vel: pygame.math.Vector2, size: int, damage: int, color: pygame.Color) -> None:
+    def __init__(self, x: int, y: int, vel: pygame.math.Vector2, damage: int) -> None:
         super().__init__()
 
         self.pos = pygame.math.Vector2(x, y)
@@ -14,8 +14,7 @@ class Projectile(pygame.sprite.Sprite):
 
         self.lifetime = 8000
 
-        self.image = pygame.Surface([size, size])
-        self.image.fill(color)
+        self.image = lib.BULLET_SPRITES["bullet"].convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -31,7 +30,7 @@ class Projectile(pygame.sprite.Sprite):
             self.kill()
 
 class TrackingProjectile(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, speed: int, target: pygame.sprite.Sprite, size: int, damage: int, color: pygame.Color) -> None:
+    def __init__(self, x: int, y: int, speed: int, target: pygame.sprite.Sprite, damage: int) -> None:
         super().__init__()
 
         self.pos = pygame.math.Vector2(x, y)
@@ -43,8 +42,7 @@ class TrackingProjectile(pygame.sprite.Sprite):
         self.damage = damage
         self.lifetime = 8000
 
-        self.image = pygame.Surface([size, size])
-        self.image.fill(color)
+        self.image = lib.BULLET_SPRITES["tracking"].convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 

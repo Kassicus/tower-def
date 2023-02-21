@@ -7,7 +7,7 @@ import groups
 import projectile
 
 class BaseTurret(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, damage: int, projectile_speed: float, color: pygame.Color) -> None:
+    def __init__(self, x: int, y: int, damage: int, projectile_speed: float) -> None:
         super().__init__()
 
         self.pos = pygame.math.Vector2(x, y)
@@ -21,7 +21,6 @@ class BaseTurret(pygame.sprite.Sprite):
         self.projectile_type = "static"
 
         self.target = None
-        self.color = color
         
         self.image = lib.TOWER_SPRITES["standard"].convert_alpha()
         self.rect = self.image.get_rect()
@@ -61,10 +60,10 @@ class BaseTurret(pygame.sprite.Sprite):
                 case "static":
                     target_raw_vectors = self.get_vectors(self.target.pos)
                     target_vectors = pygame.math.Vector2(target_raw_vectors[0], target_raw_vectors[1])
-                    proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 4, 1, self.color)
+                    proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 1)
                     groups.projectiles.add(proj)
                 case "dynamic":
-                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, 4, 3, self.color)
+                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, 3)
                     groups.projectiles.add(proj)
 
     def rotate_sprite(self, surface: pygame.Surface) -> None:
@@ -85,11 +84,11 @@ class BaseTurret(pygame.sprite.Sprite):
 
 class RedTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 1, 1500, lib.color.RED)
+        super().__init__(x, y, 1, 1500)
 
 class BlueTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 3, 200, lib.color.BLUE)
+        super().__init__(x, y, 3, 600)
         self.image = lib.TOWER_SPRITES["advanced"].convert_alpha()
         self.shot_max_cooldown = 30
         self.shot_cooldown = 30
