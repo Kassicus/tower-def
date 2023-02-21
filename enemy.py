@@ -15,8 +15,7 @@ class BaseEnemy(pygame.sprite.Sprite):
 
         self.waypoints = lib.WAYPOINTS.copy()
 
-        self.image = pygame.Surface([size, size])
-        self.image.fill(lib.color.WHITE)
+        self.image = lib.ENEMY_SPRITES["base_right"]
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -46,10 +45,22 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.pos += self.vel * lib.delta_time
         self.rect.center = pygame.math.Vector2(round(self.pos.x), round(self.pos.y))
 
+        if self.vel.x < 0:
+            self.image = lib.ENEMY_SPRITES["base_left"]
+        elif self.vel.x > 0:
+            self.image = lib.ENEMY_SPRITES["base_right"]
+        elif self.vel.y < 0:
+            self.image = lib.ENEMY_SPRITES["base_up"]
+        elif self.vel.y > 0:
+            self.image = lib.ENEMY_SPRITES["base_down"]
+
         if len(self.waypoints) >= 1:
             self.move_to_waypoint(self.waypoints[0])
         else:
             self.vel.x, self.vel.y = 0, 0
+
+        if self.pos.y < -50:
+            self.kill()
 
         if self.health <= 0:
             self.kill()
@@ -57,5 +68,5 @@ class BaseEnemy(pygame.sprite.Sprite):
 class RedEnemy(BaseEnemy):
     def __init__(self, x: int, y: int) -> None:
         super().__init__(x, y, 20, 10, 50)
-        self.image.fill(lib.color.YELLOW)
+        
         

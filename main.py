@@ -5,6 +5,7 @@ import debug
 import enemy
 import groups
 import tower
+import level
 
 pygame.init()
 
@@ -18,7 +19,10 @@ class Game():
 
         self.debug_interface = debug.DebugInterface()
 
-        lib.create_random_waypoints(5)
+        self.level = level.Level("assets/tiled/grass_1.png", [10, 12], 64)
+        self.level.create_grid()
+
+        lib.refine_waypoints()
         
     def run(self) -> None:
         while self.running:
@@ -41,7 +45,7 @@ class Game():
                     self.running = False
 
                 if event.key == pygame.K_e:
-                    e = enemy.RedEnemy(100, 100)
+                    e = enemy.RedEnemy(-100, 192)
                     groups.enemies.add(e)
 
                 if event.key == pygame.K_b:
@@ -57,9 +61,14 @@ class Game():
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
 
+        self.level.draw(self.screen)
+
         groups.enemies.draw(self.screen)
-        groups.towers.draw(self.screen)
+        #groups.towers.draw(self.screen)
         groups.projectiles.draw(self.screen)
+
+        for tower in groups.towers:
+            tower.rotate_sprite(self.screen)    
 
         if self.debug_interface.active:
             self.debug_interface.draw()
@@ -73,6 +82,8 @@ class Game():
         groups.projectiles.update()
         
         groups.check_projectile_collision()
+
+        self.level.update()
 
         self.debug_interface.update(self.clock)
         pygame.display.update()
