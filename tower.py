@@ -7,7 +7,7 @@ import groups
 import projectile
 
 class BaseTurret(pygame.sprite.Sprite):
-    def __init__(self, x: int, y: int, size: int, damage: int, projectile_speed: float, color: pygame.Color) -> None:
+    def __init__(self, x: int, y: int, damage: int, projectile_speed: float, color: pygame.Color) -> None:
         super().__init__()
 
         self.pos = pygame.math.Vector2(x, y)
@@ -20,10 +20,10 @@ class BaseTurret(pygame.sprite.Sprite):
         self.target_type = "first"
         self.projectile_type = "static"
 
+        self.target = None
         self.color = color
         
-        self.image = pygame.Surface([size, size])
-        self.image.fill(self.color)
+        self.image = lib.TOWER_SPRITES["standard"]
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -35,29 +35,47 @@ class BaseTurret(pygame.sprite.Sprite):
 
         return vectors
     
+    def rotate_to_target(self, target: pygame.math.Vector2) -> tuple[pygame.Surface, pygame.Rect]:
+        angle = math.atan2(self.pos.x - target.x, self.pos.y - target.y)
+        degrees = math.degrees(angle)
+
+        rotated_image = pygame.transform.rotate(self.image, degrees)
+        new_rect = rotated_image.get_rect(center = self.rect.center)
+
+        return(rotated_image, new_rect)
+    
     def shoot(self) -> None:
         if len(groups.enemies) > 0:
             match self.target_type:
                 case "first":
-                    target = groups.enemies.sprites()[0]
+                    self.target = groups.enemies.sprites()[0]
                 case "last":
                     last = len(groups.enemies)
-                    target = groups.enemies.sprites()[last - 1]
+                    self.target = groups.enemies.sprites()[last - 1]
                 case "random":
-                    target = random.choice(groups.enemies.sprites())
+                    self.target = random.choice(groups.enemies.sprites())
                 case _:
-                    target = groups.enemies.sprites()[0]
+                    self.target = groups.enemies.sprites()[0]
 
             match self.projectile_type:
                 case "static":
-                    target_raw_vectors = self.get_vectors(target.pos)
+                    target_raw_vectors = self.get_vectors(self.target.pos)
                     target_vectors = pygame.math.Vector2(target_raw_vectors[0], target_raw_vectors[1])
                     proj = projectile.Projectile(self.pos.x, self.pos.y, target_vectors, 4, 1, self.color)
                     groups.projectiles.add(proj)
                 case "dynamic":
-                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, target, 4, 3, self.color)
+                    proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, 4, 3, self.color)
                     groups.projectiles.add(proj)
-    
+
+    def rotate_sprite(self, surface: pygame.Surface) -> None:
+        if self.target != None:
+            rotated = self.rotate_to_target(self.target.pos)
+            surface.blit(rotated[0], rotated[1])
+        else:
+            rot_hold = pygame.math.Vector2(self.pos.x, self.pos.y - 100)
+            rotated = self.rotate_to_target(rot_hold)
+            surface.blit(rotated[0], rotated[1])
+
     def update(self) -> None:
         self.shot_cooldown -= 1
 
@@ -67,11 +85,12 @@ class BaseTurret(pygame.sprite.Sprite):
 
 class RedTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 40, 1, 1500, lib.color.RED)
+        super().__init__(x, y, 1, 1500, lib.color.RED)
 
 class BlueTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
-        super().__init__(x, y, 30, 3, 200, lib.color.BLUE)
+        super().__init__(x, y, 3, 200, lib.color.BLUE)
+        self.image = lib.TOWER_SPRITES["advanced"]
         self.shot_max_cooldown = 30
         self.shot_cooldown = 30
         self.projectile_type = "dynamic"

@@ -3,6 +3,7 @@ import pygame
 enemies = pygame.sprite.Group()
 towers = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
+grid_tiles = pygame.sprite.Group()
 
 def check_projectile_collision() -> None:
     for e in enemies:
