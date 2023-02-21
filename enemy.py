@@ -15,7 +15,7 @@ class BaseEnemy(pygame.sprite.Sprite):
 
         self.waypoints = lib.WAYPOINTS.copy()
 
-        self.image = lib.ENEMY_SPRITES["base_right"]
+        self.image = lib.ENEMY_SPRITES["base_right"].convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -46,13 +46,13 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.rect.center = pygame.math.Vector2(round(self.pos.x), round(self.pos.y))
 
         if self.vel.x < 0:
-            self.image = lib.ENEMY_SPRITES["base_left"]
+            self.image = lib.ENEMY_SPRITES["base_left"].convert_alpha()
         elif self.vel.x > 0:
-            self.image = lib.ENEMY_SPRITES["base_right"]
+            self.image = lib.ENEMY_SPRITES["base_right"].convert_alpha()
         elif self.vel.y < 0:
-            self.image = lib.ENEMY_SPRITES["base_up"]
+            self.image = lib.ENEMY_SPRITES["base_up"].convert_alpha()
         elif self.vel.y > 0:
-            self.image = lib.ENEMY_SPRITES["base_down"]
+            self.image = lib.ENEMY_SPRITES["base_down"].convert_alpha()
 
         if len(self.waypoints) >= 1:
             self.move_to_waypoint(self.waypoints[0])

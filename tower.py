@@ -23,7 +23,7 @@ class BaseTurret(pygame.sprite.Sprite):
         self.target = None
         self.color = color
         
-        self.image = lib.TOWER_SPRITES["standard"]
+        self.image = lib.TOWER_SPRITES["standard"].convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
 
@@ -90,7 +90,7 @@ class RedTurret(BaseTurret):
 class BlueTurret(BaseTurret):
     def __init__(self, x: int, y: int) -> None:
         super().__init__(x, y, 3, 200, lib.color.BLUE)
-        self.image = lib.TOWER_SPRITES["advanced"]
+        self.image = lib.TOWER_SPRITES["advanced"].convert_alpha()
         self.shot_max_cooldown = 30
         self.shot_cooldown = 30
         self.projectile_type = "dynamic"

@@ -19,7 +19,7 @@ class Game():
 
         self.debug_interface = debug.DebugInterface()
 
-        self.level = level.Level("assets/tiled/grass_1.png", [10, 12], 64)
+        self.level = level.Level([10, 12], 64)
         self.level.create_grid()
 
         lib.refine_waypoints()

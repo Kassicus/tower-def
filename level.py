@@ -19,8 +19,8 @@ class Grid(pygame.sprite.Sprite):
         pass
 
 class Level():
-    def __init__(self, background: str, grid_size: list, grid_box_size: int) -> None:
-        self.background = lib.LEVEL_BACKGROUNDS["grass_1"]
+    def __init__(self, grid_size: list, grid_box_size: int) -> None:
+        self.background = lib.LEVEL_BACKGROUNDS["grass_1"].convert_alpha()
 
         self.grid_size = pygame.math.Vector2(grid_size[0], grid_size[1])
         self.grid_box_size = grid_box_size
