@@ -24,7 +24,7 @@ class Game():
         self.level = level.Level([10, 12], 64)
         self.level.create_grid()
 
-        self.ui_store = ui.Store(100, 100, lib.SCREEN_WIDTH - 200, lib.SCREEN_HEIGHT - 200)
+        self.ui_store = ui.Store(50, 50, lib.SCREEN_WIDTH - 100, lib.SCREEN_HEIGHT - 100)
 
         lib.refine_waypoints()
         
@@ -91,7 +91,7 @@ class Game():
 
     def update(self) -> None:
         if self.ui_store.is_visible:
-            pass
+            self.ui_store.update()
         else:
             groups.enemies.update()
             groups.towers.update()
