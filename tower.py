@@ -67,7 +67,7 @@ class BaseTurret(pygame.sprite.Sprite):
                     proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, self.damage)
                     groups.projectiles.add(proj)
                 
-            sound.play_sound("gunshot")
+            sound.play_random_sound(sound.gunshots)
 
     def rotate_sprite(self, surface: pygame.Surface) -> None:
         if self.target != None:
