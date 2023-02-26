@@ -5,6 +5,7 @@ import random
 import lib
 import groups
 import projectile
+import sound
 
 class BaseTurret(pygame.sprite.Sprite):
     def __init__(self, x: int, y: int, damage: int, projectile_speed: float) -> None:
@@ -65,6 +66,8 @@ class BaseTurret(pygame.sprite.Sprite):
                 case "dynamic":
                     proj = projectile.TrackingProjectile(self.pos.x, self.pos.y, self.projectile_speed, self.target, self.damage)
                     groups.projectiles.add(proj)
+                
+            sound.play_sound("gunshot")
 
     def rotate_sprite(self, surface: pygame.Surface) -> None:
         if self.target != None:
