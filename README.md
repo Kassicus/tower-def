@@ -17,3 +17,7 @@ Many games have come before this, none have made it very far, trying to have thi
 - [ ] User Interface
     - [ ] Global pause button (pauses everything, ignores all input except unpause)
     - [ ] Save current game (this will be difficult) **IMPORTANT**
+
+> BUGS
+
+- [ ] Double turrets are not always shooting

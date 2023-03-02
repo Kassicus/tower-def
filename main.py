@@ -24,7 +24,8 @@ class Game():
         self.level = level.Level([10, 12], 64)
         self.level.create_grid()
 
-        self.ui_store = ui.Store(50, 50, lib.SCREEN_WIDTH - 100, lib.SCREEN_HEIGHT - 100)
+        self.store = ui.StorePanel()
+        self.info = ui.InfoPanel()
 
         lib.refine_waypoints()
         
@@ -66,9 +67,6 @@ class Game():
                     w = waves.Wave("basic", 50, 50)
                     waves.wave_group.add(w)
 
-                if event.key == pygame.K_s:
-                    self.ui_store.toggle_visibility()
-
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
 
@@ -86,22 +84,22 @@ class Game():
             for enemy in groups.enemies:
                 enemy.debug()
 
-        if self.ui_store.is_visible:
-            self.ui_store.draw_window(self.screen)
+        self.store.draw(self.screen)
+        self.info.draw(self.screen)
 
     def update(self) -> None:
-        if self.ui_store.is_visible:
-            self.ui_store.update()
-        else:
-            groups.enemies.update()
-            groups.towers.update()
-            groups.projectiles.update()
+        groups.enemies.update()
+        groups.towers.update()
+        groups.projectiles.update()
         
-            groups.check_projectile_collision()
+        groups.check_projectile_collision()
 
-            waves.wave_group.update()
+        waves.wave_group.update()
 
-            self.level.update()
+        self.level.update()
+
+        self.store.update()
+        self.info.update()
 
         self.debug_interface.update(self.clock)
         pygame.display.update()
